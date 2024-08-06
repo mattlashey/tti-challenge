@@ -1,0 +1,217 @@
+
+  
+body{
+    /* background-color: aqua; */
+}
+
+
+th{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding-left: 1rem; /* 16px */
+    padding-right: 1rem; /* 16px */
+    
+  }
+
+
+
+td {
+    padding:1.4rem 0px;
+    border-bottom: solid 1px rgb(224, 212, 212);
+    text-align: left;
+    font-size: 0.8rem;
+  }
+  
+
+tbody tr:hover {
+    background: #5886fa2a;
+  }
+  
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  td{
+    padding-left: 1rem;
+    padding-top: 1.5rem; /* 12px */
+    padding-bottom: 1.5rem; /* 12px */
+  }
+
+  td.firstName{
+    font-weight: 500;
+    white-space: nowrap;
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+  }
+
+
+
+  .title{
+    font-weight: 700;
+    font-size: 2rem;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-bottom: 1px solid rgb(203, 200, 200);
+    padding-bottom: 16px;
+    color: #5887fa;
+  }
+
+  .collapsible {
+    color: black;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .content {
+    padding: 16px 18px;
+    display: none;
+    overflow: hidden;
+    /* background-color: #f1f1f1; */
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width:5%;
+    background-color: #5887fa;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    text-align: center;
+  }
+  
+  li a {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+  }
+  
+  li a.active {
+    background-color: #4c629bca;
+    color: white;
+  }
+  
+  li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+
+ .sortBtn{
+    display:flex; align-items:center;
+ }
+
+table{
+    width: 100%;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; 
+    text-align: left;
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+input{
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.5rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity));
+    border-width: 1px;
+    border-radius: 0.5rem;
+    display: block;
+    padding: 0.5rem !important;
+
+}
+
+input.advancedSearch{
+
+    width: 100%;
+    
+}
+
+input.basicSearch{
+    width: 50%;
+}
+
+.resetBtn{
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    padding: 0.25rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity));
+    border-width: 1px;
+    border-radius: 0.5rem;
+    margin-left: 0.25rem;
+    cursor: pointer;
+}
+
+.advancdeSearchBtn{
+    border-top: 1px solid #dfdbdb;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+label{
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    display: block;
+}
+
+select{
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.625rem !important;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity));
+    border-width: 1px;
+    border-radius: 0.5rem;
+    width: 100%;
+    display: block;
+
+}
+
+.dashboardFrame{
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.dashboardFrame > div.dashboardBody{
+    position: relative;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    overflow: hidden;
+}
