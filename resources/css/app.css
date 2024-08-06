@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fi-ta-table {
+    @apply table-fixed;
+}
+
+.fi-ta-row {
+    @apply hover:bg-neutral-300 transition-colors !duration-200;
+}
+
+.fi-ta-text {
+    @apply truncate;
+}
