@@ -1,17 +1,17 @@
 <div>
     <div class="row mb-3">
         <div class="col-md-4">
-            <input type="text" wire:model.debounce.300ms="search" class="form-control" placeholder="Search patients...">
+            <input type="search" wire:model.live.debounce.300ms="search" class="form-control" placeholder="Search patients...">
         </div>
         <div class="col-md-3">
-            <select wire:model="gender" class="form-control">
+            <select wire:model.change="gender" class="form-control">
                 <option value="">All Genders</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
             </select>
         </div>
         <div class="col-md-3">
-            <select wire:model="country" class="form-control">
+            <select wire:model.change="country" class="form-control">
                 <option value="">All Countries</option>
                 @foreach ($patients->pluck('country')->unique() as $country)
                     <option value="{{ $country }}">{{ $country }}</option>
@@ -23,36 +23,36 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
-                <th wire:click="sortBy('first_name')" style="cursor: pointer;" class="w-25 p-3">
+                <th wire:key="firstName_header" wire:click.prevent="sortBy('first_name')" style="cursor: pointer;">
                     First Name
-                    @if($sortBy === 'first_name')
-                    <span wire:click="sortBy('first_name')" class="float-right">
-                        <i class="fa fa-arrow-up text-muted" ></i>
-                        <i class="fa fa-arrow-down" ></i>
+                    <span class="float-right">
+                        <i class="fa fa-arrow-up {{ $sortByVariable === 'first_name' && $sortDirection === 'asc' ? '' : 'text-muted'}}" ></i>
+                        <i class="fa fa-arrow-down {{ $sortByVariable === 'first_name' && $sortDirection === 'desc' ? '' : 'text-muted'}}" ></i>
                     </span>
-                        <!-- <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i> -->
-                    @endif
+
                 </th>
                 <th wire:click="sortBy('last_name')" style="cursor: pointer;">
                     Last Name
-                    @if($sortBy === 'last_name')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                    @endif
+                    <span class="float-right">
+                        <i class="fa fa-arrow-up {{ $sortByVariable === 'last_name' && $sortDirection === 'asc' ? '' : 'text-muted'}}" ></i>
+                        <i class="fa fa-arrow-down {{ $sortByVariable === 'last_name' && $sortDirection === 'desc' ? '' : 'text-muted'}}" ></i>
+                    </span>
                 </th>
                 <th>Email</th>
                 <th>Gender</th>
                 <th wire:click="sortBy('updated_at')" style="cursor: pointer;">
                     Updated At
-                    @if($sortBy === 'updated_at')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                    @endif
+                    <span class="float-right">
+                        <i class="fa fa-arrow-up {{ $sortByVariable === 'updated_at' && $sortDirection === 'asc' ? '' : 'text-muted'}}" ></i>
+                        <i class="fa fa-arrow-down {{ $sortByVariable === 'updated_at' && $sortDirection === 'desc' ? '' : 'text-muted'}}" ></i>
+                    </span>
                 </th>
                 <th>Country</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($patients as $patient)
-                <tr>
+                <tr wire:key="patient-{{ $patient->first_name }}">
                     <td>{{ $patient->first_name }}</td>
                     <td>{{ $patient->last_name }}</td>
                     <td>{{ $patient->email }}</td>

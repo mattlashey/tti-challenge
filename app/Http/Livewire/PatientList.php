@@ -8,37 +8,41 @@ use App\Models\Patient;
 
 class PatientList extends Component
 {
+    public $users;
     use WithPagination;
 
     public $search = '';
     public $gender = '';
     public $country = '';
-    public $sortBy = 'first_name';
+    public $sortByVariable = 'first_name';
     public $sortDirection = 'asc';
 
-    protected $updatesQueryString = ['search', 'gender', 'country', 'sortBy', 'sortDirection'];
-
+    //runs before render() abd only once during initial page loading, never again
     public function mount()
     {
-        $this->fill(request()->only('search', 'gender', 'country', 'sortBy', 'sortDirection'));
+        $this->fill(request()->only('search', 'gender', 'country', 'sortByVariable', 'sortDirection'));
     }
 
+    //Function to update the sort field and sort direction
     public function sortBy($field)
     {
-        if ($this->sortBy === $field) {
+        if ($this->sortByVariable === $field) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
             $this->sortDirection = 'asc';
         }
 
-        $this->sortBy = $field;
+        $this->sortByVariable = $field;
     }
 
-    public function updatingSearch()
+    //Livewire hook to update the search variable on change/update 
+    public function updateSearch()
     {
-        $this->resetPage();
+        $this->reset($this->search);
+        $this->goToPage(1);
     }
 
+    //Called on inital page loading and returns the patient list blade view
     public function render()
     {
         $patients = Patient::query()
@@ -53,9 +57,9 @@ class PatientList extends Component
             ->when($this->country, function($query) {
                 return $query->where('country', $this->country);
             })
-            ->orderBy($this->sortBy, $this->sortDirection)
+            ->orderBy($this->sortByVariable, $this->sortDirection)
             ->paginate(10);
-return view('livewire.patient-list', ['patients' => $patients])
-        ->extends('layouts.app');
+        return view('livewire.patient-list', ['patients' => $patients])
+        ->extends('components.layouts.app');
     }
 }
