@@ -10,8 +10,16 @@
 
     <title>Hello, title!</title>
   </head>
-  <body>
-    <h1>Hello, body!</h1>
+  <body style="display:flex; flex-direction:column; justify-content:center; align-items:center;
+  min-height:100vh;">
+    <h1>Welcome to the TTI challenge!</h1>
+    <h4>Author: Shalmalee Shenolikar</h4>
+
+    <h3>Patient Portal</h3>
+
+    <nav>
+      <h4><a href="/patients" wire:navigate>Click here to go to the patient portal</a></h4>
+  </nav>
     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
