@@ -1,80 +1,103 @@
-# TTI Interview challenge (Patient Management System)
+# At-Home Coding Challenge: Laravel, PHP, and MySQL
 
-Welcome to our interview challenge! This repository contains the necessary files and instructions for completing the challenge.
-
-## Setup Instructions
-
-Follow these steps to set up the project on your local machine:
-
-### 1. Install the dependencies
-
-```
-composer install
-```
-
-### 2. Create the database file and configure your enviromental variables
-
-```
-touch database/database.sqlite
-```
-
-Add the following to your `.env` file
-
-```
-DB_CONNECTION=sqlite
-DB_DATABASE=/absolute/path/to/database.sqlite
-```
-
-### 3. Run the migrations
-
-```
-php artisan migrate
-```
-
-### 3. Seed the database
-
-```
-php artisan db:seed --class=PatientSeeder
-```
+**Objective:**  
+Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
 
 ---
 
-## Objective:
-Create a dynamic patient list using Laravel and Livewire, demonstrating your ability to learn new technologies and solve real-world problems.
+## 1. Overview
 
-## Task:
-Develop a patient list page with the following features:
-1. Display all patients in a table format
-2. Implement pagination
-3. Enable sorting by different columns (e.g., first name, last name, updated at)
-4. Add filtering options (e.g., by gender, country)
-5. Implement a search functionality
+You will build a back-end application that supports the following features:
 
-## Technical Requirements:
-- Use Laravel's built-in features for database interactions
-- Implement the table using Livewire for dynamic updates without page reloads
-- Follow Laravel and PHP best practices for code organization and structure
+- **Projects**:
+  - Create, read, update, and delete.
+  - Fields:
+    - `id` (primary key, auto-increment)
+    - `title` (string, required)
+    - `description` (text, optional)
+    - `status` (e.g., `open`, `in_progress`, `completed`)
 
-## Expectations:
-1. Functionality: All required features should work correctly
-2. Code Quality: Write clean, well-commented, and organized code
-3. User Experience: Create an intuitive and responsive interface
-4. Problem-Solving: Demonstrate ability to overcome challenges and find solutions
-5. Learning Ability: Show proficiency in using unfamiliar technologies (Laravel and Livewire)
+- **Tasks**:
+  - Create, read, update, and delete.
+  - Fields:
+    - `id` (primary key, auto-increment)
+    - `project_id` (foreign key referencing `projects`)
+    - `title` (string, required)
+    - `description` (text, optional)
+    - `assigned_to` (string, optional)
+    - `due_date` (date, optional)
+    - `status` (e.g., `to_do`, `in_progress`, `done`)
 
-## Evaluation Criteria:
-- Completeness of implemented features
-- Code structure and adherence to best practices
-- Efficiency of database queries and overall performance
-- User interface design and responsiveness
-- Creativity in problem-solving approaches
+Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
 
-## Submission:
-- Fork the provided repository and submit your completed challenge through a pull request.
+---
 
-## Resources:
-- [Laravel Documentation](https://laravel.com/docs/11.x/installation)
-- [Livewire Documentation](https://livewire.laravel.com/docs/quickstart)
-- You may use online resources, but the work must be your own
+## 2. Requirements
 
-**Note**: This challenge is designed to assess your problem-solving skills and ability to learn new technologies quickly. We value your unique approach and are interested in your thought process as much as the final result.
+### 2.1 Application Structure
+- Use the **latest** or a **recent LTS version** of Laravel.
+- Define migrations for `projects` and `tasks`.
+- Use Eloquent models (`Project` and `Task`) to set up relationships.
+- Provide a **seeder** to populate the database with sample data.
+
+### 2.2 REST API Endpoints
+Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
+
+- **Projects**
+  - `GET /api/projects` – List all projects.
+  - `POST /api/projects` – Create a new project.
+  - `GET /api/projects/{id}` – Show details of a single project.
+  - `PUT /api/projects/{id}` – Update an existing project.
+  - `DELETE /api/projects/{id}` – Delete a project.
+
+- **Tasks**
+  - `GET /api/tasks` – List all tasks (optional).
+  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
+  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
+  - `GET /api/tasks/{id}` – Show details of a single task.
+  - `PUT /api/tasks/{id}` – Update an existing task.
+  - `DELETE /api/tasks/{id}` – Delete a task.
+
+### 2.3 Database Seeding
+- Write seeders to populate the database with:
+  - At least **3 sample projects**.
+  - Each project should have **2–3 sample tasks**.
+
+### 2.4 Validation
+- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
+- Return appropriate error messages if validation fails.
+
+### 2.5 Error Handling
+- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
+- Send JSON responses for both successful and failed operations.
+
+### 2.6 Code Organization
+- Implement **Controllers** for handling the logic.
+- Use **Eloquent** relationships for managing data between models.
+- Write **clean and readable** code, following Laravel conventions.
+
+### 2.7 Testing (Optional)
+- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
+
+### 2.8 Submission
+1. Push the code to a **public GitHub repository**.
+2. Include a **README** with:
+   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
+   - Instructions to run the application (e.g., `php artisan serve`).
+   - API documentation outlining endpoints and request/response formats.
+
+---
+
+## 3. What We’re Looking For
+
+1. **Laravel & PHP Mastery**  
+   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
+
+2. **MySQL Knowledge**  
+   Show the ability to write migrations, seed the database, and define relationships.
+
+3. **API Design & Best Practices**  
+   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
+
+4. **Clean & Organized Code**  
+   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
