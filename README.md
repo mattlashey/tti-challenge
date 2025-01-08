@@ -101,3 +101,33 @@ Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For 
 
 4. **Clean & Organized Code**  
    Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
+
+---
+
+## 4. Suggested Steps
+
+1. **Initial Setup**
+   - Create a new Laravel project (`laravel new project-management` or via Composer).
+   - Configure your `.env` file for MySQL connection.
+
+2. **Database & Models**
+   - Create migrations for `projects` and `tasks`.
+   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
+
+3. **Controllers & Routes**
+   - Define routes in `routes/api.php`.
+   - Create `ProjectController` and `TaskController` to handle RESTful operations.
+
+4. **Validation**
+   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
+
+5. **Seeding**
+   - Write seeders under `database/seeders` to create sample projects and tasks.
+   - Run migrations and seeds.
+
+6. **Testing (Optional)**
+   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
+
+7. **Documentation & Submission**
+   - Provide a `README.md` explaining how to set up and run your project.
+   - Push all code to a **public GitHub** repository and open a pull request.
