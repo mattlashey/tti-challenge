@@ -4,7 +4,14 @@
 /public/hot
 /public/storage
 /storage/*.key
+<<<<<<< HEAD
 /storage/pail
+=======
+<<<<<<< HEAD
+=======
+/storage/pail
+>>>>>>> 03d73f0 (Completed Assessment)
+>>>>>>> be60e69 (Completed Assessment)
 /vendor
 .env
 .env.backup
@@ -18,6 +25,16 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
+<<<<<<< HEAD
 /.nova
 /.vscode
 /.zed
+=======
+<<<<<<< HEAD
+/.vscode
+=======
+/.nova
+/.vscode
+/.zed
+>>>>>>> 03d73f0 (Completed Assessment)
+>>>>>>> be60e69 (Completed Assessment)
