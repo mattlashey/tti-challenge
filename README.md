@@ -1,133 +1,344 @@
-# At-Home Coding Challenge: Laravel, PHP, and MySQL
+# Project Management REST API
 
-**Objective:**  
-Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
+The Project Management Application is a RESTful API designed to manage Projects and Tasks. The application leverages Laravel's features, including controllers, models, API resources, form requests, and database seeders, to deliver a robust backend solution.
 
----
+Key Features:
 
-## 1. Overview
+-   **Projects and Tasks Management** : Use Controller and Models to perform CRUD operations.
+-   **Validation Rules** : Ensure data integrity using form request validation.
+-   **Error Handling** : Return meaningful HTTP status codes (e.g., 201 for created, 404 if not found).
+-   **API Resources** : Simplifies JSON transformation for consistent API responses.
+-   **Mock Data Generation**: Uses factories and seeders to populate the database with sample data.
 
-You will build a back-end application that supports the following features:
+## Setup Instructions
 
-- **Projects**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `status` (e.g., `open`, `in_progress`, `completed`)
+### Step 1 : Clone the Repository
 
-- **Tasks**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `project_id` (foreign key referencing `projects`)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `assigned_to` (string, optional)
-    - `due_date` (date, optional)
-    - `status` (e.g., `to_do`, `in_progress`, `done`)
+-   Clone the repository to your local machine:
 
-Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
+    ```
+    git clone <repository_url>
 
----
+    ```
 
-## 2. Requirements
+-   Navigate to the project directory:
+    ```
+    cd <project_directory>
+    ```
 
-### 2.1 Application Structure
-- Use the **latest** or a **recent LTS version** of Laravel.
-- Define migrations for `projects` and `tasks`.
-- Use Eloquent models (`Project` and `Task`) to set up relationships.
-- Provide a **seeder** to populate the database with sample data.
+### Step 2: Install Dependencies
 
-### 2.2 REST API Endpoints
-Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
+-   Install PHP dependencies:
+    ```
+    composer install
+    ```
 
-- **Projects**
-  - `GET /api/projects` – List all projects.
-  - `POST /api/projects` – Create a new project.
-  - `GET /api/projects/{id}` – Show details of a single project.
-  - `PUT /api/projects/{id}` – Update an existing project.
-  - `DELETE /api/projects/{id}` – Delete a project.
+### Step 3: Configure the Environment
 
-- **Tasks**
-  - `GET /api/tasks` – List all tasks (optional).
-  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
-  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
-  - `GET /api/tasks/{id}` – Show details of a single task.
-  - `PUT /api/tasks/{id}` – Update an existing task.
-  - `DELETE /api/tasks/{id}` – Delete a task.
+-   Update the `.env` file with your database configuration:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+    ```
 
-### 2.3 Database Seeding
-- Write seeders to populate the database with:
-  - At least **3 sample projects**.
-  - Each project should have **2–3 sample tasks**.
+### Step 4: Run the Application
 
-### 2.4 Validation
-- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
-- Return appropriate error messages if validation fails.
+-   Start the local development server:
+    ```
+    php artisan serve
+    ```
+-   Access the application at [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-### 2.5 Error Handling
-- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
-- Send JSON responses for both successful and failed operations.
+## About the database
 
-### 2.6 Code Organization
-- Implement **Controllers** for handling the logic.
-- Use **Eloquent** relationships for managing data between models.
-- Write **clean and readable** code, following Laravel conventions.
+-   There are two tables : projects and tasks.
+-   The status field in the projects and tasks tables is stored as a string to allow easy addition of new statuses without requiring schema changes.
+-   For more dynamic applications, a separate table for statuses could be introduced. This would allow relationships between statuses and other entities.
+-   Use DB diagram to draw a database design. You can see the database diagram [here](https://dbdiagram.io/d/Project-Management-67818b256b7fa355c38a9f56).
 
-### 2.7 Testing (Optional)
-- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
+## API Reference
 
-### 2.8 Submission
-1. Push the code to a **public GitHub repository**.
-2. Include a **README** with:
-   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
-   - Instructions to run the application (e.g., `php artisan serve`).
-   - API documentation outlining endpoints and request/response formats.
+## Postman API Documentation
 
----
+I published Postman API documentation to make API testing more efficient. You can access the documentation through this [link](https://documenter.getpostman.com/view/7694603/2sAYQWKtWs) or copy this
+https://documenter.getpostman.com/view/7694603/2sAYQWKtWs
 
-## 3. What We’re Looking For
+After you open the link, click the "Run in Postman" button located in the top-right
+corner of the page. This will prompt you to choose between running it in Postman for Web or the Postman app. Select your preferred option, and the collection will be imported into your workspace.
 
-1. **Laravel & PHP Mastery**  
-   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
+## API Documentation
 
-2. **MySQL Knowledge**  
-   Show the ability to write migrations, seed the database, and define relationships.
+### Projects
 
-3. **API Design & Best Practices**  
-   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
+#### 1. Create a Project
 
-4. **Clean & Organized Code**  
-   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
+-   **Endpoint**: `POST /api/projects`
+-   **Description**: Creates a new project.
+-   **Request Body**:
 
----
+    ```
+    {
+        "title": "Project Management REST API",
+        "description": "This is a project management API project.",
+        "status": "open"
+    }
+    ```
 
-## 4. Suggested Steps
+    **Note** : The `status` and `title` fields are required and `status` must be one of the following values: `"open"`, `"in_progress"`, `"completed"`.
 
-1. **Initial Setup**
-   - Create a new Laravel project (`laravel new project-management` or via Composer).
-   - Configure your `.env` file for MySQL connection.
+-   **Response**:
+    ```
+    {
+        "id": 1,
+        "title": "Project Management REST API",
+        "description": "This is a project management API project.",
+        "status": "open"
+    }
+    ```
 
-2. **Database & Models**
-   - Create migrations for `projects` and `tasks`.
-   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
+#### 2. Get all projects
 
-3. **Controllers & Routes**
-   - Define routes in `routes/api.php`.
-   - Create `ProjectController` and `TaskController` to handle RESTful operations.
+-   **Endpoint**: `GET /api/projects`
+-   **Description**: Get all projects.
 
-4. **Validation**
-   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
+-   **Response**:
 
-5. **Seeding**
-   - Write seeders under `database/seeders` to create sample projects and tasks.
-   - Run migrations and seeds.
+    ```
+        [
+            {
+                "id": 1,
+                "title": "Project Management REST API",
+                "description": "This is a project management API project.",
+                "status": "open"
+            }
+        ]
 
-6. **Testing (Optional)**
-   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
+    ```
 
-7. **Documentation & Submission**
-   - Provide a `README.md` explaining how to set up and run your project.
-   - Push all code to a **public GitHub** repository and open a pull request.
+#### 3. Get a single project
+
+-   **Endpoint**: `GET /api/projects/{id}`
+-   **Description**: Get a single project.
+
+-   **Response**:
+
+    ```
+        {
+           "project" :  {
+                "id": 1,
+                "title": "Project Management REST API",
+                "description": "This is a project management API project.",
+                "status": "open"
+            }
+        }
+
+    ```
+
+#### 4. Update a Project
+
+-   **Endpoint**: `PUT /api/projects/{id}`
+-   **Description**: Updates an existing project.
+-   **Request Body**:
+    ```
+    {
+        "title": "Project Management REST API Version 2",
+        "description": "This is a project management API project.",
+        "status": "completed"
+    }
+    ```
+-   **Response**:
+
+    ```
+    {
+        "message": "Project updated successfully.",
+        "project": {
+            "id" : 1,
+            "title": "Project Management REST API Version 2",
+            "description": "This is a project management API project.",
+            "status": "completed"
+        }
+    }
+
+    ```
+
+#### 5. Delete a Project
+
+-   **Endpoint**: `DELETE /api/projects/{id}`
+-   **Description**: Deletes an existing project.
+-   **Response**:
+    ```
+    {
+        "message": "Project deleted successfully.",
+    }
+    ```
+
+### Tasks
+
+#### 1. Create a task under a project
+
+-   **Endpoint**: `POST /api/projects/{project_id}/tasks`
+-   **Description**: Creates a new task for a specific project.
+-   **Request Body**:
+
+    ```
+    {
+        "title" : "task two",
+        "description" : "update about page",
+        "assigned_to" : "sai soe san",
+        "due_date" : "2025-01-30",
+        "status" : "to_do"
+    }
+    ```
+
+    **Note** : The `status` and `title` fields are required and `status` must be one of the following values: `"to_do"`, `"in_progress"`, `"qa_review"`, `"done"`.
+
+-   **Response**:
+    ```
+    {
+        "id": 11,
+        "title": "task two",
+        "description": "update about page",
+        "assigned_to": "sai soe san",
+        "due_date": "2025-01-30",
+        "status": "to_do",
+        "project": {
+            "id": 9,
+            "title": "Et minima voluptas.",
+            "description": "Repellat numquam facilis voluptatibus optio amet odio sit.",
+            "status": "open"
+        }
+    }
+    ```
+
+#### 2. Get all tasks
+
+-   **Endpoint**: `GET /api/tasks`
+-   **Description**: Get all tasks.
+
+-   **Response**:
+
+    ```
+    [
+        {
+            "id": 1,
+            "title": "Doloribus soluta quod ut.",
+            "description": "Nihil quae dolore ut architecto dolorem ea incidunt qui.",
+            "assigned_to": "Eulah Hauck",
+            "due_date": "2024-04-28",
+            "status": "done",
+            "project": {
+                "id": 14,
+                "title": "Asperiores incidunt numquam.",
+                "description": "Laudantium quod dicta nobis laborum laborum accusantium.",
+                "status": "open"
+            }
+        }
+    ]
+
+    ```
+
+#### 3. Get all tasks for a specific project
+
+-   **Endpoint**: `GET /api/projects/{project_id}/tasks`
+-   **Description**: Get all tasks associate with a project.
+
+-   **Response**:
+
+    ```
+    [
+        {
+            "id": 1,
+            "title": "Doloribus soluta quod ut.",
+            "description": "Nihil quae dolore ut architecto dolorem ea incidunt qui.",
+            "assigned_to": "Eulah Hauck",
+            "due_date": "2024-04-28",
+            "status": "done",
+            "project": {
+                "id": 14,
+                "title": "Asperiores incidunt numquam.",
+                "description": "Laudantium quod dicta nobis laborum laborum accusantium.",
+                "status": "open"
+            }
+        }
+    ]
+
+    ```
+
+#### 4. Get a single task
+
+-   **Endpoint**: `GET /api/tasks/{id}`
+-   **Description**: Get a single task.
+
+-   **Response**:
+
+    ```
+        {
+            "task": {
+                "id": 2,
+                "title": "Illo unde aut laudantium.",
+                "description": "Facere in et voluptas aliquam quidem est ut non.",
+                "assigned_to": "Mr. Hilton Gulgowski",
+                "due_date": "1970-08-13",
+                "status": "in_progress",
+                "project": {
+                    "id": 15,
+                    "title": "Consequatur temporibus earum.",
+                    "description": "Repellat nam maiores enim natus asperiores aut. Voluptatibus eos ea quos porro.",
+                    "status": "open"
+                }
+            }
+        }
+    ```
+
+#### 5. Update a task
+
+-   **Endpoint**: `PUT /api/tasks/{id}`
+-   **Description**: Updates an existing task.
+-   **Request Body**:
+    ```
+    {
+        "title" : "task one updated",
+        "description" : "update home page version3",
+        "assigned_to" : "sai",
+        "due_date" : "2025-01-30",
+        "status" : "to_do",
+        "project_id" : 14 // optional
+    }
+    ```
+-   **Response**:
+
+    ```
+    {
+        "message": "Task updated successfully.",
+        "task": {
+            "id": 1,
+            "title": "task one updated",
+            "description": "update home page version3",
+            "assigned_to": "sai",
+            "due_date": "2025-01-30",
+            "status": "to_do",
+            "project": {
+                "id": 14,
+                "title": "Asperiores incidunt numquam.",
+                "description": "Laudantium quod dicta nobis laborum laborum accusantium.",
+                "status": "open"
+            }
+        }
+    }
+
+    ```
+
+#### 6. Delete a task
+
+-   **Endpoint**: `DELETE /api/tasks/{id}`
+-   **Description**: Deletes an existing task.
+-   **Response**:
+    ```
+    {
+        "message": "Task deleted successfully.",
+    }
+    ```
