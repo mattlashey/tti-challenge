@@ -1,133 +1,456 @@
-# At-Home Coding Challenge: Laravel, PHP, and MySQL
+# TTI/WaveHealth Challenge
+This repo contains a implementation of the coding 
+challenge that implements the Project/Task project.
 
-**Objective:**  
-Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
+- [Usage](#usage)
+  - [Docker](#docker)
+  - [Non Docker](#non-docker)
+- [Testing](#testing)
+- [Endpoints](#endpoints)
+- [Design](#design)
 
----
+## Usage
+Bundled in this repository is everything necessary 
+to run this project, and utilizes 
+[a container I built in the past, `jasoryeh/php-laravel`](https://github.com/jasoryeh/docker-collection/tree/master/php-laravel)
+to quickly start up this project, if you do not 
+have Docker installed or do not wish to use it, see the 
+[non-Docker instructions below](#non-docker).
 
-## 1. Overview
+### Docker
+Ensure your Docker engine is currently running 
+first.
 
-You will build a back-end application that supports the following features:
+0. Clone this repository.
+   * ```git clone https://github.com/jasoryeh/tti-challenge.git && cd tti-challenge```
+1. Review the provided `docker-compose.yml`, 
+   and configure any options you would like to 
+   change or modify, see `.env.example` for 
+   configurable variables.
+2. Start the container with the provided `docker-compose.yml`
+   * ```docker compose up```
+   * This container provides:
+     * The latest `mysql` container
+       * No ports are exposed to the host here, however
+         you may enable out-of-container access by uncommenting 
+         the `ports` and `- '3306:3306'` lines by removing the 
+         `#` prefixing those lines.
+     * A `PhpMyAdmin` container for viewing the MySQL database
+       * Avaialble at http://127.0.0.1:8081
+     * The project
+       * Available at http://127.0.0.1:80
+3. Done.
+   * The container should boot up, install all dependencies 
+     for you and seed the database with the `ChallengeSeeder`
+   * Should you wish to execute `artisan` or other commands,
+     you can enter the container via 
+     * `docker compose exec -it project bash`
+     * then `cd /home/container/app` to see the project directory
 
-- **Projects**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `status` (e.g., `open`, `in_progress`, `completed`)
+### Non-Docker
+0. Clone the repository with the same clone command as the 
+   one in the [Docker](#docker) instructions.
+1. Standard Laravel project setup applies:
+   * Install a PHP version preferably `>8.0`, I used `8.2`
+   * Ensure `composer` is installed
+   * then,
+     * Install dependencies:
+       * ```composer install```
+     * Create a `.env` file from defaults.
+       * ```cp .env.example .env```
+     * Create an application key:
+       * ```php artisan key:generate```
+2. Modify your `.env` to adjust properties prefixed with 
+   `DB_` to contain your database credentials.
+3. Seed the database
+   * See [seeders](#seeders)
+4. Start the project!
+   * If for development/testing purposes, you can use:
+     * the built in composer run:
+       * `composer run dev`
+     * the Laravel-provided development server
+       * `php artisan serve`
+   * If you have [Laravel Herd](https://herd.laravel.com/)
+     * `herd link`
+     * Then go to the Herd-configured `.test` site, usually 
+       http://tti-challenge.test
+   * If you are using a web server, such as `NGINX` or `Apache`
+     * Ensure you have `php-fpm` of the relevant version
+     * Follow your web server/proxy instructions for serving Laravel projects.
 
-- **Tasks**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `project_id` (foreign key referencing `projects`)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `assigned_to` (string, optional)
-    - `due_date` (date, optional)
-    - `status` (e.g., `to_do`, `in_progress`, `done`)
+## Testing
+This project uses `PEST` as it's test suite. Challenge 
+requirements and seeders are prefixed with `Challenge` 
+in their name.
 
-Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
+### Seeders
+The seeder that seeds for the basic requirements is located 
+in `database/seeders/ChallengeSeeder.php`, to execute it:
 
----
+* To seed with challenge defaults:
+    * ```php artisan db:seed --class=ChallengeSeeder```
+* To seed with custom amounts of project, use environment variables:
+    * ```PROJECTS=5 TASK_MIN=1 TASK_MAX=10 php artisan db:seed --class=ChallengeSeeder```
 
-## 2. Requirements
+### Data Generators
+Fake data is generated for testing at `database/factories`
 
-### 2.1 Application Structure
-- Use the **latest** or a **recent LTS version** of Laravel.
-- Define migrations for `projects` and `tasks`.
-- Use Eloquent models (`Project` and `Task`) to set up relationships.
-- Provide a **seeder** to populate the database with sample data.
+### Tests
+Tests for the challenge requirements are located in the 
+`tests` directory, files prefixed with `Challenge` indicate
+challenge requirement tests.
 
-### 2.2 REST API Endpoints
-Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
+### Running
+In the relevant environment's shell (Docker/Host):
+```php artisan test```
 
-- **Projects**
-  - `GET /api/projects` – List all projects.
-  - `POST /api/projects` – Create a new project.
-  - `GET /api/projects/{id}` – Show details of a single project.
-  - `PUT /api/projects/{id}` – Update an existing project.
-  - `DELETE /api/projects/{id}` – Delete a project.
+## Endpoints
+The project implements the following endpoints:
+- [Projects](#projects)
+  - [GET `/api/projects` - List All Projects](#get-apiprojects---list-all-projects)
+  - [GET `/api/projects/{id}` - Get Project Details](#get-apiprojectsid---get-project-details)
+  - [GET `/api/projects/{id}/tasks` - List All Tasks for Project](#get-apiprojectsidtasks---list-tasks-for-this-project)
+  - [POST `/api/projects` - Create Project](#post-apiprojects---create-project)
+  - [PUT `/api/projects/{id}` - Update Project](#put-apiprojectsid---update-project)
+  - [DELETE `/api/projects/{id}` - Delete Project](#delete-apiprojectsid---delete-project)
+- [Tasks](#tasks)
+  - [GET `/api/tasks` - List All Tasks](#get-apitasks---list-all-tasks)
+  - [GET `/api/tasks/{id}` - Get Task Details](#get-apitasksid---get-task-details)
+  - [POST `/api/tasks/` - Create Task](#post-apitasks---create-task)
+  - [PUT `/api/tasks/{id}` - Update Task](#put-apitasksid---update-task)
+  - [DELETE `/api/tasks/{id}` - Delete Task](#delete-apitasksid---delete-task)
 
-- **Tasks**
-  - `GET /api/tasks` – List all tasks (optional).
-  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
-  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
-  - `GET /api/tasks/{id}` – Show details of a single task.
-  - `PUT /api/tasks/{id}` – Update an existing task.
-  - `DELETE /api/tasks/{id}` – Delete a task.
+### Projects
 
-### 2.3 Database Seeding
-- Write seeders to populate the database with:
-  - At least **3 sample projects**.
-  - Each project should have **2–3 sample tasks**.
+#### GET `/api/projects` - List all Projects
+Request:
+- `page`: The page number to view, see `first_page_url`, `last_page_url`, `next_page_url`, `links` for available pages.
 
-### 2.4 Validation
-- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
-- Return appropriate error messages if validation fails.
+Response: A response with paginated results. See `data` for Project list.
+```json
+{
+	"current_page": 1,
+	"data": [
+		{
+			"id": 1,
+			"title": "Non ut id facilis recusandae enim nulla.",
+			"description": "Vitae enim iure est doloribus voluptates repellendus. Enim provident modi voluptas rerum ipsum fugiat maiores. Iure doloremque iusto autem eveniet ipsa.",
+			"status": "completed",
+			"created_at": "2025-01-13T19:12:59.000000Z",
+			"updated_at": "2025-01-13T19:12:59.000000Z"
+		}, ...
+	],
+	"first_page_url": "http:\/\/tti-challenge.test\/api\/projects?page=1",
+	"from": 1,
+	"last_page": 23,
+	"last_page_url": "http:\/\/tti-challenge.test\/api\/projects?page=23",
+	"links": [
+		{
+			"url": null,
+			"label": "&laquo; Previous",
+			"active": false
+		},
+		{
+			"url": "http:\/\/tti-challenge.test\/api\/projects?page=1",
+			"label": "1",
+			"active": true
+		}, ...
+	],
+	"next_page_url": "http:\/\/tti-challenge.test\/api\/projects?page=2",
+	"path": "http:\/\/tti-challenge.test\/api\/projects",
+	"per_page": 15,
+	"prev_page_url": null,
+	"to": 15,
+	"total": 336
+}
+```
 
-### 2.5 Error Handling
-- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
-- Send JSON responses for both successful and failed operations.
+#### GET `/api/projects/{id}` - Get Project Details
+Request: No request options are available for this request.
 
-### 2.6 Code Organization
-- Implement **Controllers** for handling the logic.
-- Use **Eloquent** relationships for managing data between models.
-- Write **clean and readable** code, following Laravel conventions.
+Response:
+```json
+{
+	"id": 1,
+	"title": "Non ut id facilis recusandae enim nulla.",
+	"description": "Vitae enim iure est doloribus voluptates repellendus. Enim provident modi voluptas rerum ipsum fugiat maiores. Iure doloremque iusto autem eveniet ipsa.",
+	"status": "completed",
+	"created_at": "2025-01-13T19:12:59.000000Z",
+	"updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
 
-### 2.7 Testing (Optional)
-- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
 
-### 2.8 Submission
-1. Push the code to a **public GitHub repository**.
-2. Include a **README** with:
-   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
-   - Instructions to run the application (e.g., `php artisan serve`).
-   - API documentation outlining endpoints and request/response formats.
+#### GET `/api/projects/{id}/tasks` - List Tasks for this Project
+Request: 
+- `page`: The page number to view, see `first_page_url`, `last_page_url`, `next_page_url`, `links` for available pages.
 
----
+Response:
+```json
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "project_id": 1,
+            "title": "Dolorum sed dolorem qui sint ex velit.",
+            "description": "Et expedita eveniet voluptas pariatur laborum expedita deleniti. Quam inventore id exercitationem praesentium et laboriosam beatae deserunt. Hic sunt consequuntur pariatur dolorum consequatur.",
+            "assigned_to": "Kaylie Jast",
+            "due_date": "2001-12-03 21:20:57",
+            "status": "in_progress",
+            "created_at": "2025-01-13T19:12:59.000000Z",
+            "updated_at": "2025-01-13T19:12:59.000000Z"
+        }, ...
+    ],
+    "first_page_url": "http:\/\/tti-challenge.test\/api\/projects\/1\/tasks?page=1",
+    "from": 1,
+    "last_page": 15,
+    "last_page_url": "http:\/\/tti-challenge.test\/api\/projects\/1\/tasks?page=15",
+    "links": [
+        {
+            "url": null,
+            "label": "&laquo; Previous",
+            "active": false
+        },
+        {
+            "url": "http:\/\/tti-challenge.test\/api\/projects\/1\/tasks?page=1",
+            "label": "1",
+            "active": true
+        }, ...
+    ],
+    "next_page_url": "http:\/\/tti-challenge.test\/api\/projects\/1\/tasks?page=2",
+    "path": "http:\/\/tti-challenge.test\/api\/projects\/1\/tasks",
+    "per_page": 15,
+    "prev_page_url": null,
+    "to": 15,
+    "total": 222
+}
+```
 
-## 3. What We’re Looking For
+#### POST `/api/projects/` - Create Project
+Request:
+```json
+{
+	"title": "required: a string",
+	"description": "optional: a string",
+	"status": "required: a string, one of: open, in_progress, completed"
+}
+```
 
-1. **Laravel & PHP Mastery**  
-   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
+Response:
+```json
+{
+	"id": 1,
+	"title": "Non ut id facilis recusandae enim nulla.",
+	"description": "Vitae enim iure est doloribus voluptates repellendus. Enim provident modi voluptas rerum ipsum fugiat maiores. Iure doloremque iusto autem eveniet ipsa.",
+	"status": "completed",
+	"created_at": "2025-01-13T19:12:59.000000Z",
+	"updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
 
-2. **MySQL Knowledge**  
-   Show the ability to write migrations, seed the database, and define relationships.
+#### PUT `/api/projects/{id}` - Update Project
+Request:
+```json
+{
+	"title": "optional: a string",
+	"description": "optional: a string",
+	"status": "optional: a string, one of: open, in_progress, completed"
+}
+```
 
-3. **API Design & Best Practices**  
-   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
+Response:
+```json
+{
+	"id": 1,
+	"title": "Non ut id facilis recusandae enim nulla.",
+	"description": "Vitae enim iure est doloribus voluptates repellendus. Enim provident modi voluptas rerum ipsum fugiat maiores. Iure doloremque iusto autem eveniet ipsa.",
+	"status": "completed",
+	"created_at": "2025-01-13T19:12:59.000000Z",
+	"updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
 
-4. **Clean & Organized Code**  
-   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
+#### DELETE `/api/projects/{id}` - Delete Project
+Request: No request options are available for this route.
 
----
+Response:
+```json
+{
+	"id": 1,
+	"title": "Non ut id facilis recusandae enim nulla.",
+	"description": "Vitae enim iure est doloribus voluptates repellendus. Enim provident modi voluptas rerum ipsum fugiat maiores. Iure doloremque iusto autem eveniet ipsa.",
+	"status": "completed",
+	"created_at": "2025-01-13T19:12:59.000000Z",
+	"updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
 
-## 4. Suggested Steps
+### Tasks
 
-1. **Initial Setup**
-   - Create a new Laravel project (`laravel new project-management` or via Composer).
-   - Configure your `.env` file for MySQL connection.
+#### GET `/api/tasks` - List all Tasks
+Request:
+- `page`: The page number to view, see `first_page_url`, `last_page_url`, `next_page_url`, `links` for available pages.
 
-2. **Database & Models**
-   - Create migrations for `projects` and `tasks`.
-   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
+Response: A response with paginated results. See `data` for Project list.
+```json
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "project_id": 1,
+            "title": "Dolorum sed dolorem qui sint ex velit.",
+            "description": "Et expedita eveniet voluptas pariatur laborum expedita deleniti. Quam inventore id exercitationem praesentium et laboriosam beatae deserunt. Hic sunt consequuntur pariatur dolorum consequatur.",
+            "assigned_to": "Kaylie Jast",
+            "due_date": "2026-12-03 21:20:57",
+            "status": "in_progress",
+            "created_at": "2025-01-13T19:12:59.000000Z",
+            "updated_at": "2025-01-13T19:12:59.000000Z"
+        }, ...
+    ],
+    "first_page_url": "http:\/\/tti-challenge.test\/api\/tasks?page=1",
+    "from": 1,
+    "last_page": 68,
+    "last_page_url": "http:\/\/tti-challenge.test\/api\/tasks?page=68",
+    "links": [
+        {
+            "url": null,
+            "label": "&laquo; Previous",
+            "active": false
+        },
+        {
+            "url": "http:\/\/tti-challenge.test\/api\/tasks?page=1",
+            "label": "1",
+            "active": true
+        }, ...
+    ],
+    "next_page_url": "http:\/\/tti-challenge.test\/api\/tasks?page=2",
+    "path": "http:\/\/tti-challenge.test\/api\/tasks",
+    "per_page": 15,
+    "prev_page_url": null,
+    "to": 15,
+    "total": 1010
+}
+```
 
-3. **Controllers & Routes**
-   - Define routes in `routes/api.php`.
-   - Create `ProjectController` and `TaskController` to handle RESTful operations.
+#### GET `/api/tasks/{id}` - Get Task Details
+Request: No request options are available for this request.
 
-4. **Validation**
-   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
+Response:
+```json
+{
+    "id": 1,
+    "project_id": 1,
+    "title": "Dolorum sed dolorem qui sint ex velit.",
+    "description": "Et expedita eveniet voluptas pariatur laborum expedita deleniti. Quam inventore id exercitationem praesentium et laboriosam beatae deserunt. Hic sunt consequuntur pariatur dolorum consequatur.",
+    "assigned_to": "Kaylie Jast",
+    "due_date": "2026-12-03 21:20:57",
+    "status": "in_progress",
+    "created_at": "2025-01-13T19:12:59.000000Z",
+    "updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
 
-5. **Seeding**
-   - Write seeders under `database/seeders` to create sample projects and tasks.
-   - Run migrations and seeds.
+#### POST `/api/tasks` - Create Task
+Request:
+```json
+{
+    "project_id":  /* required, integer, a Project ID */,
+    "title": "required, string",
+    "description": "optional, string",
+    "assigned_to": "optional, string",
+    "due_date": "optional, date/datetime",
+    "status": "required, string, one of: to_do, in_progress, done"
+}
+```
 
-6. **Testing (Optional)**
-   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
+#### PUT `/api/tasks/{id}` - Update Task
+Request:
+```json
+{
+    "project_id":  /* optional, integer, a Project ID */,
+    "title": "optional, string",
+    "description": "optional, string",
+    "assigned_to": "optional, string",
+    "due_date": "optional, date/datetime",
+    "status": "optional, string, one of: to_do, in_progress, done"
+}
+```
 
-7. **Documentation & Submission**
-   - Provide a `README.md` explaining how to set up and run your project.
-   - Push all code to a **public GitHub** repository and open a pull request.
+Response:
+```json
+{
+    "id": 1,
+    "project_id": 1,
+    "title": "Dolorum sed dolorem qui sint ex velit.",
+    "description": "Et expedita eveniet voluptas pariatur laborum expedita deleniti. Quam inventore id exercitationem praesentium et laboriosam beatae deserunt. Hic sunt consequuntur pariatur dolorum consequatur.",
+    "assigned_to": "Kaylie Jast",
+    "due_date": "2026-12-03 21:20:57",
+    "status": "in_progress",
+    "created_at": "2025-01-13T19:12:59.000000Z",
+    "updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
+
+#### DELETE `/api/tasks/{id}` - DELETE Task
+Request: No request options are avaialble for this route.
+
+Response:
+```json
+{
+    "id": 1,
+    "project_id": 1,
+    "title": "Dolorum sed dolorem qui sint ex velit.",
+    "description": "Et expedita eveniet voluptas pariatur laborum expedita deleniti. Quam inventore id exercitationem praesentium et laboriosam beatae deserunt. Hic sunt consequuntur pariatur dolorum consequatur.",
+    "assigned_to": "Kaylie Jast",
+    "due_date": "2026-12-03 21:20:57",
+    "status": "in_progress",
+    "created_at": "2025-01-13T19:12:59.000000Z",
+    "updated_at": "2025-01-13T19:12:59.000000Z"
+}
+```
+
+
+## Design
+This project is implemented to keep the implementation as 
+straightforward as possible.
+
+Among features/tools used include:
+- [Resource Controllers](#resource-controllers)
+- [Built-In Pagination](#built-in-pagination)
+- [Validation](#validation)
+- [Docker](#docker-1)
+- [PEST](#pest)
+
+### Resource Controllers
+Resource controllers are routes that the Laravel
+project pre-defines for common CRUD operations on 
+resources, in this case the `Project` and `Task` models.
+
+They are utilized instead of manually defining routes
+to simplify router files.
+
+### Built-in Pagination
+By using built-in pagination features of Eloquent/Laravel,
+we don't have to write as much pagination logic to 
+handle "future" volumes of project and tasks.
+
+Further, pagination saves server resource usage by reducing
+the amount of data processed, in-memory, and accessed at a 
+time, as rarely is ALL information needed all at once.
+
+### Validation
+Validation is provided via Laravel-included validators. 
+See the controllers (ProjectController and TaskController) 
+for more information.
+
+### Docker
+To simplify testing and make reproducibility easier,
+Docker Compose and Docker Container files are provided
+to create a testing environment.
+
+### PEST
+Simple testing framework chosen as a personal preference
+due to experience over PHPUnit.
+
