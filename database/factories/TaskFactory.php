@@ -25,7 +25,7 @@ class TaskFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->sentences(3, true),
             'assigned_to' => $this->faker->name(),
-            'due_date' => $this->faker->optional(.9)->dateTime(),
+            'due_date' => $this->faker->optional(.9)->dateTimeBetween('now', '+100 years'),
             'status' => $this->faker->randomElement([
                 Task::STATUS_TO_DO, Task::STATUS_IN_PROGRESS, Task::STATUS_DONE]),
         ];
