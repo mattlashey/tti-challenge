@@ -26,7 +26,7 @@ class TaskController extends Controller
             'description' => ['nullable', 'string'],
             'assigned_to' => ['nullable', 'string'],
             'project_id' => ['required', 'integer'],
-            'due_date' => ['required', 'date', 'after_or_equal:today'],
+            'due_date' => ['nullable', 'date', 'after_or_equal:today'],
             'status' => ['required', Rule::in([Task::STATUS_TO_DO, Task::STATUS_IN_PROGRESS, Task::STATUS_DONE])],
         ]);
 
