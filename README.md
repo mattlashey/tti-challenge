@@ -418,6 +418,7 @@ straightforward as possible.
 
 Among features/tools used include:
 - [Resource Controllers](#resource-controllers)
+- [Built-In Pagination](#built-in-pagination)
 - [Validation](#validation)
 - [Docker](#docker-1)
 - [PEST](#pest)
@@ -429,6 +430,15 @@ resources, in this case the `Project` and `Task` models.
 
 They are utilized instead of manually defining routes
 to simplify router files.
+
+### Built-in Pagination
+By using built-in pagination features of Eloquent/Laravel,
+we don't have to write as much pagination logic to 
+handle "future" volumes of project and tasks.
+
+Further, pagination saves server resource usage by reducing
+the amount of data processed, in-memory, and accessed at a 
+time, as rarely is ALL information needed all at once.
 
 ### Validation
 Validation is provided via Laravel-included validators. 
