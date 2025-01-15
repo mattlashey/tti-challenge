@@ -1,4 +1,4 @@
-# Project Management API
+# Trinh Nhu Khang Le Submission: Project Management API
 
 A RESTful API built with Laravel for managing projects and tasks. The API allows for complete CRUD operations on both projects and tasks, with proper validation and error handling.
 
