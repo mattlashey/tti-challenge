@@ -99,6 +99,19 @@ In the relevant environment's shell (Docker/Host):
 
 ## Endpoints
 The project implements the following endpoints:
+- [Projects](#projects)
+  - [GET `/api/projects` - List All Projects](#get-apiprojects---list-all-projects)
+  - [GET `/api/projects/{id}` - Get Project Details](#get-apiprojectsid---get-project-details)
+  - [GET `/api/projects/{id}/tasks` - List All Tasks for Project](#get-apiprojectsidtasks---list-tasks-for-this-project)
+  - [POST `/api/projects` - Create Project](#post-apiprojects---create-project)
+  - [PUT `/api/projects/{id}` - Update Project](#put-apiprojectsid---update-project)
+  - [DELETE `/api/projects/{id}` - Delete Project](#delete-apiprojectsid---delete-project)
+- [Tasks](#tasks)
+  - [GET `/api/tasks` - List All Tasks](#get-apitasks---list-all-tasks)
+  - [GET `/api/tasks/{id}` - Get Task Details](#get-apitasksid---get-task-details)
+  - [POST `/api/tasks/` - Create Task](#post-apitasks---create-task)
+  - [PUT `/api/tasks/{id}` - Update Task](#put-apitasksid---update-task)
+  - [DELETE `/api/tasks/{id}` - Delete Task](#delete-apitasksid---delete-task)
 
 ### Projects
 
