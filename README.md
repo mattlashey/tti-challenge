@@ -1,133 +1,150 @@
-# At-Home Coding Challenge: Laravel, PHP, and MySQL
+===========================================================================================
+01. INITIAL PROJECT SETUP
+===========================================================================================
+ 1. Create a New Laravel Project:
+	Run the following command to create a new Laravel project:
+	---------------------------------------------------------------
+	| composer create-project laravel/laravel project-management  |
+	---------------------------------------------------------------
+	
+ 2. Go to "project-management" folder. Update following fields in .env File
+	APP_NAME=project-management
+	APP_URL=http://localhost
+	DB_CONNECTION=mysql
+	DB_HOST=127.0.0.1
+	DB_PORT=3306
+	DB_DATABASE=project_management
+	DB_USERNAME=root
+	DB_PASSWORD=
+	
+ 3. Generate Application Key:
+	Run this command to generate a unique application key:
+	------------------------------
+	| php artisan key:generate   |
+	------------------------------
+	This sets the APP_KEY in your .env file, which is critical for security.
+	This command generates artisan file.
+===========================================================================================
+02. DATABASE SETUP, DATABASE SEEDING AND MIGRATIONS
+===========================================================================================
+ Execute (4) and (5) for first time -
+ 4. For our schema, you need two migration files:
+	a) projects table
+		----------------------------------------------------
+		| php artisan make:migration create_projects_table |
+		----------------------------------------------------
+		This will generate files in the database/migrations directory, with name "2025_01_14_000000_create_projects_table.php"
+	b) tasks table
+		-------------------------------------------------
+		| php artisan make:migration create_tasks_table |
+		-------------------------------------------------
+		This will generate files in the database/migrations directory, with name "2025_01_14_000001_create_tasks_table.php"
+		
+ 5. Define Schemas in php in these files - "2025_01_14_000000_create_projects_table.php" and 
+	"2025_01_14_000001_create_tasks_table.php"
+	
+ 6. Create Seeders for the tables of projects, tasks.
+	a)  ------------------------------------------
+		| php artisan make:seeder ProjectSeeder  |
+		------------------------------------------
+	b)  ---------------------------------------
+		| php artisan make:seeder TaskSeeder  |
+		---------------------------------------
+		
+ 7. Update Sample Data in run() function of ProjectSeeder and TaskSeeder
+ 
+ 8. Run Migrations using:
+	-----------------------
+	| php artisan migrate |
+	-----------------------
+	This will create three tables in the database of "project-management" - migration table(for maintaining table version history),
+	sessions (table) and other two are projects table and tasks table.
+ 
+ 9. Execute Database Seeding:
+	-----------------------
+	| php artisan db:seed |
+	-----------------------
+ 10. For re-execute,
+	--------------------------------------
+	| php artisan migrate:refresh --seed |
+	--------------------------------------
+	
+==========================================================================================
+03. CREATE MODELS
+==========================================================================================
+ 11. Create a Model for Project Table in app/Models/Project.php
+	----------------------------------
+	| php artisan make:model Project |
+	----------------------------------
+	
+ 12. Create a Model for Task Table in app/Models/Task.php
+	-------------------------------
+	| php artisan make:model Task |
+	-------------------------------
+ 
+==========================================================================================
+04. CREATE CONTROLLER
+==========================================================================================
+ 13. Create a Controller for CSRF Token Genrin app/Http/Controllers/TokenController.php using Command:
+	 -----------------------------------------------
+	 | php artisan make:controller TokenController |
+	 -----------------------------------------------
+ 
+ 14. Create a Controller for Project Table in app/Http/Controllers/ProjectController.php using Command:
+	 -------------------------------------------------
+	 | php artisan make:controller ProjectController |
+	 -------------------------------------------------
+	
+ 15. Create a Controller for Task Table in app/Http/Controllers/TaskController.php using Command:
+	----------------------------------------------
+	| php artisan make:controller TaskController |
+	----------------------------------------------
+	
+ 16. Add routing in routes/web.php
 
-**Objective:**  
-Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
+=========================================================================================
+05. START THE DEVELOPMENT SERVER
+=========================================================================================
+ 17. Clear the route when something is updated
+	---------------------------
+	| php artisan route:clear |
+	---------------------------
+	| php artisan route:cache |
+	---------------------------
+ 
+ 18. Run the development server:
+	----------------------
+	| php artisan serve  |
+	----------------------
+==========================================================================================
+06. TESTING
+==========================================================================================
+ 19. Create Factory Files for Project
+	 -----------------------------------------------------------
+	 | php artisan make:factory ProjectFactory --model=Project |
+	 -----------------------------------------------------------
+	 ------------------------------------------------------
+	 | php artisan make:factory TaskFactory --model=Task  |
+	 ------------------------------------------------------
+ 20. Creating Test Files -
+	 -----------------------------------------
+	 | php artisan make:test ProjectApiTest  |
+	 -----------------------------------------
+	 -------------------------------------
+	 | php artisan make:test TaskApiTest |
+	 -------------------------------------
+ 21. Executing Tests for the project -
+	 ---------------------
+	 |  php artisan test |
+	 ---------------------
+===========================================================================================
+ADDITIONAL INFORMATION
+===========================================================================================
+a) app/Http/Controllers - This is the entry point of the API
+b) app/Http/Models - These Files are the Models of the tables
+c) database/factories - These are Fake Files used for Testing.
+d) database/migrations - These contains table schemas of the DATABASE
+e) database/seeders - These contains the inital data required to load into table Schemas
+f) routes/web.php - These contains API routes
+g) tests/Feature - It is for Testing APIs
 
----
-
-## 1. Overview
-
-You will build a back-end application that supports the following features:
-
-- **Projects**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `status` (e.g., `open`, `in_progress`, `completed`)
-
-- **Tasks**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `project_id` (foreign key referencing `projects`)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `assigned_to` (string, optional)
-    - `due_date` (date, optional)
-    - `status` (e.g., `to_do`, `in_progress`, `done`)
-
-Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
-
----
-
-## 2. Requirements
-
-### 2.1 Application Structure
-- Use the **latest** or a **recent LTS version** of Laravel.
-- Define migrations for `projects` and `tasks`.
-- Use Eloquent models (`Project` and `Task`) to set up relationships.
-- Provide a **seeder** to populate the database with sample data.
-
-### 2.2 REST API Endpoints
-Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
-
-- **Projects**
-  - `GET /api/projects` – List all projects.
-  - `POST /api/projects` – Create a new project.
-  - `GET /api/projects/{id}` – Show details of a single project.
-  - `PUT /api/projects/{id}` – Update an existing project.
-  - `DELETE /api/projects/{id}` – Delete a project.
-
-- **Tasks**
-  - `GET /api/tasks` – List all tasks (optional).
-  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
-  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
-  - `GET /api/tasks/{id}` – Show details of a single task.
-  - `PUT /api/tasks/{id}` – Update an existing task.
-  - `DELETE /api/tasks/{id}` – Delete a task.
-
-### 2.3 Database Seeding
-- Write seeders to populate the database with:
-  - At least **3 sample projects**.
-  - Each project should have **2–3 sample tasks**.
-
-### 2.4 Validation
-- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
-- Return appropriate error messages if validation fails.
-
-### 2.5 Error Handling
-- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
-- Send JSON responses for both successful and failed operations.
-
-### 2.6 Code Organization
-- Implement **Controllers** for handling the logic.
-- Use **Eloquent** relationships for managing data between models.
-- Write **clean and readable** code, following Laravel conventions.
-
-### 2.7 Testing (Optional)
-- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
-
-### 2.8 Submission
-1. Push the code to a **public GitHub repository**.
-2. Include a **README** with:
-   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
-   - Instructions to run the application (e.g., `php artisan serve`).
-   - API documentation outlining endpoints and request/response formats.
-
----
-
-## 3. What We’re Looking For
-
-1. **Laravel & PHP Mastery**  
-   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
-
-2. **MySQL Knowledge**  
-   Show the ability to write migrations, seed the database, and define relationships.
-
-3. **API Design & Best Practices**  
-   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
-
-4. **Clean & Organized Code**  
-   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
-
----
-
-## 4. Suggested Steps
-
-1. **Initial Setup**
-   - Create a new Laravel project (`laravel new project-management` or via Composer).
-   - Configure your `.env` file for MySQL connection.
-
-2. **Database & Models**
-   - Create migrations for `projects` and `tasks`.
-   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
-
-3. **Controllers & Routes**
-   - Define routes in `routes/api.php`.
-   - Create `ProjectController` and `TaskController` to handle RESTful operations.
-
-4. **Validation**
-   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
-
-5. **Seeding**
-   - Write seeders under `database/seeders` to create sample projects and tasks.
-   - Run migrations and seeds.
-
-6. **Testing (Optional)**
-   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
-
-7. **Documentation & Submission**
-   - Provide a `README.md` explaining how to set up and run your project.
-   - Push all code to a **public GitHub** repository and open a pull request.
