@@ -20,19 +20,22 @@ class ProjectController extends Controller
         return response()->json($project, 201);
     }
 
-    public function show(Project $project)
+    public function show($id)
     {
-        return response()->json($project->load('tasks'));
+        $project = Project::with('tasks')->findOrFail($id);
+        return response()->json($project);
     }
 
-    public function update(ProjectRequest $request, Project $project)
+    public function update(ProjectRequest $request, $id)
     {
+        $project = Project::findOrFail($id);
         $project->update($request->validated());
         return response()->json($project);
     }
 
-    public function destroy(Project $project)
+    public function destroy($id)
     {
+        $project = Project::findOrFail($id);
         $project->delete();
         return response()->json(null, 204);
     }
