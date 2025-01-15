@@ -2,6 +2,13 @@
 This repo contains a implementation of the coding 
 challenge that implements the Project/Task project.
 
+- [Usage](#usage)
+  - [Docker](#docker)
+  - [Non Docker](#non-docker)
+- [Testing](#testing)
+- [Endpoints](#endpoints)
+- [Design](#design)
+
 ## Usage
 Bundled in this repository is everything necessary 
 to run this project, and utilizes 
