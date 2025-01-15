@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "d4908b3f-7bf1-4d6f-9f5e-565a98a2daab",
+		"name": "Project Management API",
+		"description": "API collection for Projects and Tasks management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18441374"
+	},
+	"item": [
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "List All Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"E-commerce Platform\",\n    \"description\": \"Build a new e-commerce platform for our client\",\n    \"status\": \"open\"\n}"
+						},
+						"url": "{{base_url}}/api/projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/projects/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated E-commerce Platform\",\n    \"description\": \"Updated project description\",\n    \"status\": \"in_progress\"\n}"
+						},
+						"url": "{{base_url}}/api/projects/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/projects/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "List Project Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/projects/1/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Setup Database Schema\",\n    \"description\": \"Design and implement the initial database schema\",\n    \"assigned_to\": \"John Doe\",\n    \"due_date\": \"2025-02-01\",\n    \"status\": \"to_do\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/projects/3/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/tasks/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Database Schema\",\n    \"description\": \"Updated task description\",\n    \"assigned_to\": \"Jane Smith\",\n    \"due_date\": \"2025-02-15\",\n    \"status\": \"in_progress\"\n}"
+						},
+						"url": "{{base_url}}/api/tasks/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/tasks/1"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
