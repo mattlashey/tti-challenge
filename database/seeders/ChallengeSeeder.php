@@ -15,9 +15,13 @@ class ChallengeSeeder extends Seeder
      */
     public function run(): void
     {
-        $projects = Project::factory()->count(3)->create();
-        $projects->each(function (Project $project) {
-            Task::factory()->count(random_int(2, 3))->create([
+        $p_limit = env('PROJECTS', 3);
+        $t_limit_min = env('TASKS_MIN', 2);
+        $t_limit_max = env('TASKS_MAX', 3);
+
+        $projects = Project::factory()->count($p_limit)->create();
+        $projects->each(function (Project $project) use ($t_limit_min, $t_limit_max) {
+            Task::factory()->count(random_int($t_limit_min, $t_limit_max))->create([
                 'project_id' => $project->id,
             ]);
         });
