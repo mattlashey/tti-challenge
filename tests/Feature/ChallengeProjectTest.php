@@ -13,6 +13,7 @@ function isProject(AssertableJson $json)
 }
 
 test('test projects list', function () {
+    \App\Models\Project::factory()->create(); // create at least one project to test
     $response = $this->getJson('/api/projects');
 
     $response->assertStatus(200);
