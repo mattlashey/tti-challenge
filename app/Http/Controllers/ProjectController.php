@@ -52,7 +52,7 @@ class ProjectController extends Controller
         }
 
         $data = $request->validate([
-            'title' => ['nullable', 'required'],
+            'title' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'status' => ['nullable', Rule::in([Project::STATUS_OPEN, Project::STATUS_IN_PROGRESS, Project::STATUS_COMPLETED])],
         ]);
