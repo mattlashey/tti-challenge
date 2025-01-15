@@ -57,9 +57,9 @@ The API will be available at `http://localhost:8000`
 
 ## Postman Collection
 1. Open Postman
-2. Click on "Import" button'
-3. Select the Project-Management-API.postman_collection.json file from the project's root directory
-4. Select the Project-Management-API.postman_collection_environment.json file from the project's root directory
+2. Click on "Import" button
+3. Select the ProjectManagementApi.postman_collection.json file from the project's root directory
+4. Select the ProjectManagementApi.postman_environment.json file from the project's root directory
 5. The collection and environment will be imported with all available endpoints
 
 ## API Endpoints
