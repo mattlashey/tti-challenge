@@ -161,7 +161,7 @@ Response:
 ```
 
 
-#### DELETE `/api/projects/{id}/tasks` - List Tasks for this Project
+#### GET `/api/projects/{id}/tasks` - List Tasks for this Project
 Request: 
 - `page`: The page number to view, see `first_page_url`, `last_page_url`, `next_page_url`, `links` for available pages.
 
@@ -207,7 +207,7 @@ Response:
 }
 ```
 
-#### POST `/api/projects/{id}` - Create Project
+#### POST `/api/projects/` - Create Project
 Request:
 ```json
 {
@@ -332,7 +332,7 @@ Response:
 }
 ```
 
-#### POST `/api/tasks/{id}` - Create Task
+#### POST `/api/tasks` - Create Task
 Request:
 ```json
 {
