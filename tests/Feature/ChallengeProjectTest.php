@@ -2,6 +2,8 @@
 
 use Illuminate\Testing\Fluent\AssertableJson;
 
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+
 function isProject(AssertableJson $json)
 {
     return $json->whereAllType(array(
