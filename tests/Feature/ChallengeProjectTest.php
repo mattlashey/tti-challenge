@@ -67,6 +67,39 @@ test('test project create', function () {
         ->and($project->status)->toBe($status);
 });
 
+test('test project create fails when no title', function () {
+    $description = "Test project description is here.";
+    $status = \App\Models\Project::STATUS_IN_PROGRESS;
+
+    $response = $this->post('/api/projects', array(
+        'description' => $description,
+        'status' => $status,
+    ));
+    $response->assertStatus(400);
+});
+
+test('test project create fails when no status', function () {
+    $title = "Test Project Title Goes Here";
+    $description = "Test project description is here.";
+
+    $response = $this->post('/api/projects', array(
+        'title' => $title,
+        'description' => $description,
+    ));
+    $response->assertStatus(400);
+});
+
+test('test project create succeeds when no description', function () {
+    $title = "Test Project Title Goes Here";
+    $status = \App\Models\Project::STATUS_IN_PROGRESS;
+
+    $response = $this->post('/api/projects', array(
+        'title' => $title,
+        'status' => $status,
+    ));
+    $response->assertStatus(201);
+});
+
 test('test project update', function () {
     $project = \App\Models\Project::factory()->create();
 
@@ -94,6 +127,39 @@ test('test project update', function () {
         ->and($project->title)->toBe($title_alt)
         ->and($project->description)->toBe($description_alt)
         ->and($project->status)->toBe($status_alt);
+});
+
+test('test project update succeeds when only title', function () {
+    $project = \App\Models\Project::factory()->create();
+
+    $title_alt = "Altered Test Project Title Goes Here";
+
+    $putresponse = $this->put('/api/projects/'.$project->id, [
+        'title' => $title_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test project update succeeds when only description', function () {
+    $project = \App\Models\Project::factory()->create();
+
+    $description_alt = "Altered Test project description is here.";
+
+    $putresponse = $this->put('/api/projects/'.$project->id, [
+        'description' => $description_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test project update succeeds when only status', function () {
+    $project = \App\Models\Project::factory()->create();
+
+    $status_alt = \App\Models\Project::STATUS_OPEN;
+
+    $putresponse = $this->put('/api/projects/'.$project->id, [
+        'status' => $status_alt,
+    ]);
+    $putresponse->assertStatus(200);
 });
 
 test('test projects delete', function () {

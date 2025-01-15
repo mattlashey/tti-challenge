@@ -88,6 +88,63 @@ test('test task create', function () {
         ->and($task->status)->toBe($task->status);
 });
 
+test('test task create fails when no title', function () {
+    $title = "Test Task Title Goes Here";
+    $description = "Test task description is here.";
+    $assigned_to = "John Doe";
+    $due_date = "2030-10-13";
+    $status = \App\Models\Task::STATUS_IN_PROGRESS;
+
+    $project = \App\Models\Project::factory()->create()->first();
+
+    $response = $this->post('/api/tasks', array(
+        'description' => $description,
+        'assigned_to' => $assigned_to,
+        'due_date' => $due_date,
+        'project_id' => $project->id,
+        'status' => $status,
+    ));
+    $response->assertStatus(400);
+});
+
+test('test task create fails when no project id', function () {
+    $title = "Test Task Title Goes Here";
+    $description = "Test task description is here.";
+    $assigned_to = "John Doe";
+    $due_date = "2030-10-13";
+    $status = \App\Models\Task::STATUS_IN_PROGRESS;
+
+    $project = \App\Models\Project::factory()->create()->first();
+
+    $response = $this->post('/api/tasks', array(
+        'title' => $title,
+        'description' => $description,
+        'assigned_to' => $assigned_to,
+        'due_date' => $due_date,
+        'status' => $status,
+    ));
+    $response->assertStatus(400);
+});
+
+test('test task create fails when no status', function () {
+    $title = "Test Task Title Goes Here";
+    $description = "Test task description is here.";
+    $assigned_to = "John Doe";
+    $due_date = "2030-10-13";
+    $status = \App\Models\Task::STATUS_IN_PROGRESS;
+
+    $project = \App\Models\Project::factory()->create()->first();
+
+    $response = $this->post('/api/tasks', array(
+        'title' => $title,
+        'description' => $description,
+        'assigned_to' => $assigned_to,
+        'due_date' => $due_date,
+        'project_id' => $project->id,
+    ));
+    $response->assertStatus(400);
+});
+
 test('test task update', function () {
     $project = \App\Models\Project::factory()->create()->first();
     $task = \App\Models\Task::factory()->create([
@@ -131,6 +188,90 @@ test('test task update', function () {
         ->and($task->due_date)->toContain($due_date_alt)
         ->and($task->project_id)->toBe($project_alt->id)
         ->and($task->status)->toBe($status_alt);
+});
+
+test('test task update succeeds when only title', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $title_alt = "Modified Test Task Title Goes Here";
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'title' => $title_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test task update succeeds when only description', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $description_alt = "Modified Test task description is here.";
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'description' => $description_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test task update succeeds when only assigned to', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $assigned_to_alt = "Jane Appleseed";
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'assigned_to' => $assigned_to_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test task update succeeds when only due date', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $due_date_alt = "2040-10-13";
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'due_date' => $due_date_alt,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test task update succeeds when only project id', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $project_alt = \App\Models\Project::factory()->create()->first();
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'project_id' => $project_alt->id,
+    ]);
+    $putresponse->assertStatus(200);
+});
+
+test('test task update succeeds when only status', function () {
+    $project = \App\Models\Project::factory()->create()->first();
+    $task = \App\Models\Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $status_alt = \App\Models\Task::STATUS_TO_DO;
+
+    $putresponse = $this->put('/api/tasks/'.$task->id, [
+        'status' => $status_alt,
+    ]);
+    $putresponse->assertStatus(200);
 });
 
 test('test projects delete', function () {
