@@ -14,7 +14,10 @@ function isTask(AssertableJson $json) {
 }
 
 test('test tasks list', function () {
-    \App\Models\Task::factory()->create(); // create at least one project to test
+    $project = \App\Models\Project::factory()->create();
+    \App\Models\Task::factory()->create(array(
+        'project_id' => $project->id,
+    )); // create at least one project to test
     $response = $this->getJson('/api/tasks');
 
     $response->assertStatus(200);
