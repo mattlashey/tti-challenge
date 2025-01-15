@@ -406,17 +406,22 @@ Response:
 
 
 ## Design
-This project is implemented to keep the implementation as simple as possible.
+This project is implemented to keep the implementation as 
+straightforward as possible.
 
 Among features/tools used include:
 - [Resource Controllers](#resource-controllers)
 - [Validation](#validation)
-- [Docker](#docker)
+- [Docker](#docker-1)
+- [PEST](#pest)
 
 ### Resource Controllers
 Resource controllers are routes that the Laravel
-project pre-defines for CRUD operations on resources,
-in this case the `Project` and `Task` models.
+project pre-defines for common CRUD operations on 
+resources, in this case the `Project` and `Task` models.
+
+They are utilized instead of manually defining routes
+to simplify router files.
 
 ### Validation
 Validation is provided via Laravel-included validators. 
@@ -427,4 +432,8 @@ for more information.
 To simplify testing and make reproducibility easier,
 Docker Compose and Docker Container files are provided
 to create a testing environment.
+
+### PEST
+Simple testing framework chosen as a personal preference
+due to experience over PHPUnit.
 
