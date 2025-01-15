@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Routing\Middleware;
-use App\Http\Middleware\JsonResponseMiddleware;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'json.response' => \App\Http\Middleware\JsonResponseMiddleware::class,
+        ]);
     })
     ->withExceptions(function ($exceptions) {
 
