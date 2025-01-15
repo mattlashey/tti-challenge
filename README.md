@@ -12,11 +12,6 @@ A RESTful API built with Laravel for managing projects and tasks. The API allows
 ## Installation
 
 1. Clone the repository:
-```bash
-git clone git@github.com:mattlashey/tti-challenge.git
-git checkout trinh_nhu_khang_le-submittion
-cd tti-challenge
-```
 
 2. Install dependencies:
 ```bash
