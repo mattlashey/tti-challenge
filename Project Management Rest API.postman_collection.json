@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "49f5d622-6cc4-485f-81d7-d8969700716b",
+		"name": "Project Management Rest API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40937308"
+	},
+	"item": [
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "List all projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"new 1\",\r\n    \"description\": \"This is a description of the new project.\",\r\n    \"status\": \"in_progress\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Show details of a single project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/projects/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing project",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Project 7\",\r\n    \"description\": \"This is a description of the new project 7.\",\r\n    \"status\": \"in_progress\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/projects/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a project",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Project 4444\",\r\n    \"description\": \"This is a description of the new project 4.\",\r\n    \"status\": \"in_progress\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/projects/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "List all tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "List all tasks for a specific project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/projects/8/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new task under a project",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Task Title 4\",\r\n  \"description\": \"Description of the task.\",\r\n  \"assigned_to\": \"John Doe\",\r\n  \"due_date\": \"2025-01-20\",\r\n  \"status\": \"to_do\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/projects/8/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Show details of a single task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/tasks/20"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing project",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Updated Task Title\",\r\n  \"description\": \"Updated description of the task.\",\r\n  \"assigned_to\": \"Jane Doe\",\r\n  \"due_date\": \"2025-01-30\",\r\n  \"status\": \"in_progress\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/tasks/20"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a task",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/tasks/19"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
