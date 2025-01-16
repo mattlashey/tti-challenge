@@ -1,133 +1,169 @@
-# At-Home Coding Challenge: Laravel, PHP, and MySQL
+# **Project Management REST API**
 
-**Objective:**  
-Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
-
----
-
-## 1. Overview
-
-You will build a back-end application that supports the following features:
-
-- **Projects**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `status` (e.g., `open`, `in_progress`, `completed`)
-
-- **Tasks**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `project_id` (foreign key referencing `projects`)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `assigned_to` (string, optional)
-    - `due_date` (date, optional)
-    - `status` (e.g., `to_do`, `in_progress`, `done`)
-
-Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
+A RESTful API built using **Laravel**, **MySQL**, and **PHP** to manage projects and tasks. This application supports full CRUD operations, efficient database relationships, and modern development practices.
 
 ---
 
-## 2. Requirements
+## **Features**
 
-### 2.1 Application Structure
-- Use the **latest** or a **recent LTS version** of Laravel.
-- Define migrations for `projects` and `tasks`.
-- Use Eloquent models (`Project` and `Task`) to set up relationships.
-- Provide a **seeder** to populate the database with sample data.
-
-### 2.2 REST API Endpoints
-Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
-
-- **Projects**
-  - `GET /api/projects` – List all projects.
-  - `POST /api/projects` – Create a new project.
-  - `GET /api/projects/{id}` – Show details of a single project.
-  - `PUT /api/projects/{id}` – Update an existing project.
-  - `DELETE /api/projects/{id}` – Delete a project.
-
-- **Tasks**
-  - `GET /api/tasks` – List all tasks (optional).
-  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
-  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
-  - `GET /api/tasks/{id}` – Show details of a single task.
-  - `PUT /api/tasks/{id}` – Update an existing task.
-  - `DELETE /api/tasks/{id}` – Delete a task.
-
-### 2.3 Database Seeding
-- Write seeders to populate the database with:
-  - At least **3 sample projects**.
-  - Each project should have **2–3 sample tasks**.
-
-### 2.4 Validation
-- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
-- Return appropriate error messages if validation fails.
-
-### 2.5 Error Handling
-- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
-- Send JSON responses for both successful and failed operations.
-
-### 2.6 Code Organization
-- Implement **Controllers** for handling the logic.
-- Use **Eloquent** relationships for managing data between models.
-- Write **clean and readable** code, following Laravel conventions.
-
-### 2.7 Testing (Optional)
-- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
-
-### 2.8 Submission
-1. Push the code to a **public GitHub repository**.
-2. Include a **README** with:
-   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
-   - Instructions to run the application (e.g., `php artisan serve`).
-   - API documentation outlining endpoints and request/response formats.
+-   Full **CRUD operations** for **Projects** and **Tasks**.
+-   Nested resource relationships: Projects can have multiple tasks.
+-   **Input validation** and descriptive error handling.
+-   Adheres to **RESTful API standards**.
+-   Database migrations and seeding for initial sample data.
+-   JSON responses with appropriate **HTTP status codes**.
+-   Comprehensive test coverage for Projects and Tasks endpoints.
 
 ---
 
-## 3. What We’re Looking For
+## **Requirements**
 
-1. **Laravel & PHP Mastery**  
-   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
+To run this application, you’ll need:
 
-2. **MySQL Knowledge**  
-   Show the ability to write migrations, seed the database, and define relationships.
-
-3. **API Design & Best Practices**  
-   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
-
-4. **Clean & Organized Code**  
-   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
+-   PHP **8.2** or higher.
+-   Composer (for dependency management).
+-   MySQL **5.7** or higher.
+-   Laravel **11.x** (used in this project).
 
 ---
 
-## 4. Suggested Steps
+## **Installation**
 
-1. **Initial Setup**
-   - Create a new Laravel project (`laravel new project-management` or via Composer).
-   - Configure your `.env` file for MySQL connection.
+```bash
+1. **Clone the Repository**:
+   git clone https://github.com/your-username/project-management-rest-api.git
+   cd project-management-rest-api
 
-2. **Database & Models**
-   - Create migrations for `projects` and `tasks`.
-   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
+2. **Install Dependencies**:
+   composer install
 
-3. **Controllers & Routes**
-   - Define routes in `routes/api.php`.
-   - Create `ProjectController` and `TaskController` to handle RESTful operations.
+3. **Set Up Environment Configuration**:
+   # Create a `.env` file by copying the example:
+   cp .env.example .env
 
-4. **Validation**
-   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
+   # Generate the application key:
+   php artisan key:generate
 
-5. **Seeding**
-   - Write seeders under `database/seeders` to create sample projects and tasks.
-   - Run migrations and seeds.
+   # Update `.env` with your database credentials:
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=project_management
+   DB_USERNAME=root
+   DB_PASSWORD=your-password
 
-6. **Testing (Optional)**
-   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
+4. **Run Migrations and Seeders**:
+   php artisan migrate --seed
+```
 
-7. **Documentation & Submission**
-   - Provide a `README.md` explaining how to set up and run your project.
-   - Push all code to a **public GitHub** repository and open a pull request.
+## **Running the Application**
+
+```bash
+# Start the development server:
+php artisan serve
+
+# The application will be accessible at:
+http://127.0.0.1:8000
+```
+
+---
+
+## **API Endpoints**
+
+### **Projects**
+
+| Method | Endpoint           | Description            |
+| ------ | ------------------ | ---------------------- |
+| GET    | /api/projects      | List all projects      |
+| POST   | /api/projects      | Create a new project   |
+| GET    | /api/projects/{id} | Get a specific project |
+| PUT    | /api/projects/{id} | Update a project       |
+| DELETE | /api/projects/{id} | Delete a project       |
+
+### **Tasks**
+
+| Method | Endpoint                         | Description                       |
+| ------ | -------------------------------- | --------------------------------- |
+| GET    | /api/tasks                       | List all tasks                    |
+| GET    | /api/projects/{project_id}/tasks | List tasks for a specific project |
+| POST   | /api/projects/{project_id}/tasks | Create a task in a project        |
+| GET    | /api/tasks/{id}                  | Get a specific task               |
+| PUT    | /api/tasks/{id}                  | Update a task                     |
+| DELETE | /api/tasks/{id}                  | Delete a task                     |
+
+---
+
+## **Sample Data**
+
+```json
+{
+    "id": 1,
+    "title": "Build API",
+    "description": "Create RESTful API for managing projects",
+    "status": "in_progress",
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Setup Laravel Project",
+            "description": "Initialize Laravel application",
+            "assigned_to": "Developer A",
+            "due_date": "2025-01-15",
+            "status": "completed"
+        },
+        {
+            "id": 2,
+            "title": "Define Models",
+            "description": "Create models for Project and Task",
+            "assigned_to": "Developer B",
+            "due_date": "2025-01-16",
+            "status": "in_progress"
+        }
+        {
+            "id": 3,
+            "title": "Define Models",
+            "description": "Create models for Project and Task",
+            "assigned_to": "Developer C",
+            "due_date": "2025-01-16",
+            "status": "in_progress"
+        }
+    ]
+}
+```
+
+---
+
+## **Error Handling**
+
+```json
+# Example 404 Error Response:
+{
+  "error": "Resource not found"
+}
+
+# Example 422 Validation Error Response:
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "title": [
+      "The title field is required."
+    ]
+  }
+}
+```
+
+---
+
+## **Testing**
+
+```bash
+# Run the test suite:
+php artisan test
+
+
+# Example output:
+PASS  Tests\Feature\ProjectTest
+✓ it lists all projects
+✓ it creates a new project
+✓ it updates a project
+✓ it deletes a project
+```
