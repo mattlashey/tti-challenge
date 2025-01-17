@@ -1,133 +1,140 @@
-# At-Home Coding Challenge: Laravel, PHP, and MySQL
+# Laravel Project Management REST API
 
-**Objective:**  
-Create a simple **Project Management** REST API using **Laravel**, **MySQL**, and **PHP**. The application will manage **Projects** and **Tasks** and demonstrate your understanding of core Laravel features (migrations, seeding, REST API, etc.).
+A REST API for managing **Projects** and **Tasks**, built with **Laravel**, **MySQL**, and **Docker** (via **Laravel Sail**).
 
----
+## Table of Contents
 
-## 1. Overview
-
-You will build a back-end application that supports the following features:
-
-- **Projects**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `status` (e.g., `open`, `in_progress`, `completed`)
-
-- **Tasks**:
-  - Create, read, update, and delete.
-  - Fields:
-    - `id` (primary key, auto-increment)
-    - `project_id` (foreign key referencing `projects`)
-    - `title` (string, required)
-    - `description` (text, optional)
-    - `assigned_to` (string, optional)
-    - `due_date` (date, optional)
-    - `status` (e.g., `to_do`, `in_progress`, `done`)
-
-Each **Project** can have multiple **Tasks**, and each **Task** belongs to exactly one **Project**.
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Getting Started](#getting-started)  
+4. [Project Configuration](#project-configuration)  
+5. [Usage](#usage)  
+7. [Seeding & Factories](#seeding--factories)  
+8. [Testing](#testing)  
 
 ---
 
-## 2. Requirements
+## Overview
 
-### 2.1 Application Structure
-- Use the **latest** or a **recent LTS version** of Laravel.
-- Define migrations for `projects` and `tasks`.
-- Use Eloquent models (`Project` and `Task`) to set up relationships.
-- Provide a **seeder** to populate the database with sample data.
+This application demonstrates:
 
-### 2.2 REST API Endpoints
-Implement endpoints for CRUD operations on both **Projects** and **Tasks**. For example:
-
-- **Projects**
-  - `GET /api/projects` – List all projects.
-  - `POST /api/projects` – Create a new project.
-  - `GET /api/projects/{id}` – Show details of a single project.
-  - `PUT /api/projects/{id}` – Update an existing project.
-  - `DELETE /api/projects/{id}` – Delete a project.
-
-- **Tasks**
-  - `GET /api/tasks` – List all tasks (optional).
-  - `GET /api/projects/{project_id}/tasks` – List all tasks for a specific project.
-  - `POST /api/projects/{project_id}/tasks` – Create a new task under a project.
-  - `GET /api/tasks/{id}` – Show details of a single task.
-  - `PUT /api/tasks/{id}` – Update an existing task.
-  - `DELETE /api/tasks/{id}` – Delete a task.
-
-### 2.3 Database Seeding
-- Write seeders to populate the database with:
-  - At least **3 sample projects**.
-  - Each project should have **2–3 sample tasks**.
-
-### 2.4 Validation
-- Use **Laravel validation** to ensure required fields (e.g., `title`) are present.
-- Return appropriate error messages if validation fails.
-
-### 2.5 Error Handling
-- Return meaningful HTTP status codes (e.g., `201` for created, `404` if not found).
-- Send JSON responses for both successful and failed operations.
-
-### 2.6 Code Organization
-- Implement **Controllers** for handling the logic.
-- Use **Eloquent** relationships for managing data between models.
-- Write **clean and readable** code, following Laravel conventions.
-
-### 2.7 Testing (Optional)
-- If time allows, include some **Feature** or **Unit Tests** to show how you would test the API endpoints.
-
-### 2.8 Submission
-1. Push the code to a **public GitHub repository**.
-2. Include a **README** with:
-   - Setup instructions (how to install dependencies, configure `.env`, run migrations, and seeders).
-   - Instructions to run the application (e.g., `php artisan serve`).
-   - API documentation outlining endpoints and request/response formats.
+- **Laravel & PHP** best practices (Controllers, Models, Migrations, Validation with FormRequests).  
+- **MySQL** database operations (via Eloquent ORM).  
+- **Docker** integration with **Laravel Sail**, allowing you to run PHP, MySQL, and other services in containers.  
+- **REST API** design, returning JSON responses and appropriate HTTP status codes.  
+- **Feature Tests** that verify CRUD operations for Projects and Tasks.
 
 ---
 
-## 3. What We’re Looking For
+## Features
 
-1. **Laravel & PHP Mastery**  
-   Demonstrate knowledge of the Laravel ecosystem (controllers, models, migrations, seeding, validation, etc.).
+1. **Projects**  
+   - Create, Read, Update, Delete (CRUD).  
+   - Fields: `id`, `title`, `description`, `status`.
 
-2. **MySQL Knowledge**  
-   Show the ability to write migrations, seed the database, and define relationships.
+2. **Tasks**  
+   - Create, Read, Update, Delete.  
+   - Fields: `id`, `project_id`, `title`, `description`, `assigned_to`, `due_date`, `status`.  
+   - Each Task belongs to exactly one Project.
 
-3. **API Design & Best Practices**  
-   Properly structure endpoints, use correct HTTP methods, return appropriate status codes, and handle errors gracefully.
+3. **Database Seeding**  
+   - Uses Factories to generate realistic dummy data.  
+   - Automatically seeds 3–5 projects, each with 2–3 tasks, or as configured.
 
-4. **Clean & Organized Code**  
-   Ensure your code is easy to read and maintain. Use clear commit messages and explain decisions in the README.
+4. **FormRequest Validation**  
+   - Ensures required fields (`title`, etc.) are present and valid.
+
+5. **Feature Tests**  
+   - Confirms all API endpoints work as expected: Projects CRUD and Tasks CRUD.
 
 ---
 
-## 4. Suggested Steps
+## Getting Started
 
-1. **Initial Setup**
-   - Create a new Laravel project (`laravel new project-management` or via Composer).
-   - Configure your `.env` file for MySQL connection.
+### Prerequisites
 
-2. **Database & Models**
-   - Create migrations for `projects` and `tasks`.
-   - Create `Project` and `Task` Eloquent models with `hasMany` and `belongsTo` relationships.
+- **Docker** and **Docker Compose** installed on your machine.  
+- **Git** (if you want to clone this repository).
 
-3. **Controllers & Routes**
-   - Define routes in `routes/api.php`.
-   - Create `ProjectController` and `TaskController` to handle RESTful operations.
+### Installation
 
-4. **Validation**
-   - Use request validation (e.g., `FormRequest` classes or controller-based validation) to ensure required fields are present.
+1. Clone the repository
+    ```bash
+    git clone https://github.com/yourusername/laravel-project-mgmt.git
+    cd laravel-project-mgmt
+    ```
 
-5. **Seeding**
-   - Write seeders under `database/seeders` to create sample projects and tasks.
-   - Run migrations and seeds.
+ 2. Copy .env.example to .env
+     ```bash
+    cp .env.example .env
+    ```
 
-6. **Testing (Optional)**
-   - Use Laravel’s testing suite (`php artisan test`) to confirm your endpoints work as expected.
+3. (Optional) Update .env with any custom values  
+Make sure `DB_HOST=mysql` since that's the default hostname for the MySQL container.
 
-7. **Documentation & Submission**
-   - Provide a `README.md` explaining how to set up and run your project.
-   - Push all code to a **public GitHub** repository and open a pull request.
+4. Install Composer dependencies & set up Sail
+    ```bash
+    composer require laravel/sail --dev
+    php artisan sail:install
+    ./vendor/bin/sail composer install
+    ```
+
+5. Start Docker containers
+    ```bash
+    ./vendor/bin/sail up -d
+    ```
+
+---
+
+## Project Configuration
+
+### Migrations & Seeding
+
+Run migrations:
+    ```bash
+    ./vendor/bin/sail artisan migrate
+    ```
+
+Seed the database with sample data:
+    ```bash
+    ./vendor/bin/sail artisan db:seed
+    ```
+
+If you want a fresh start (drop all tables, re-migrate, then seed):
+    ```bash
+    ./vendor/bin/sail artisan migrate:fresh --seed
+    ```
+
+---
+
+## Usage
+
+When Docker (Sail) is running, the application is typically available at **http://localhost**.
+
+- **API Endpoints** are under `http://localhost/api`.
+- You can test endpoints with a tool like Postman or cURL.
+
+---
+
+## Seeding & Factories
+
+- **Database Factories** generate sample data using Faker.
+- **Seeders** orchestrate how many objects to create.
+- All seeding is called from `DatabaseSeeder` (run via `db:seed`).
+
+---
+
+## Testing
+
+This application includes **Feature Tests** located in `tests/Feature`.
+
+Run all tests:
+    ```bash
+    ./vendor/bin/sail test
+    ```
+
+Filter by a single test (optional):
+    ```bash
+    ./vendor/bin/sail test --filter ProjectTest
+    ./vendor/bin/sail test --filter TaskTest
+    ```
